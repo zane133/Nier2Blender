@@ -2,7 +2,7 @@ bl_info = {
     "name": "Nier: Automata model importer",
     "author": "C4nf3ng",
     "version": (1, 1),
-    "blender": (2, 78, 0),
+    "blender": (2, 93, 0),
     "api": 38019,
     "location": "File > Import-Export",
     "description": "Import Nier:Automata wmb model data",
@@ -31,18 +31,19 @@ class ImportNier2blender(bpy.types.Operator, ImportHelper):
 
 
 # Registration
+classes = (ImportNier2blender,)
 
 def menu_func_import(self, context):
     self.layout.operator(ImportNier2blender.bl_idname, text="WMB File for Nier: Automata (.wmb)")
 
 
 def register():
-    bpy.utils.register_module(__name__)
-    bpy.types.INFO_MT_file_import.append(menu_func_import)
+    for cls in classes: bpy.utils.register_class(cls)
+    bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
 
 def unregister():
-    bpy.utils.unregister_module(__name__)
-    bpy.types.INFO_MT_file_import.remove(menu_func_import)
+    for cls in reversed(classes): bpy.utils.unregister_class(cls)
+    bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
 
 
 if __name__ == '__main__':

@@ -25,7 +25,7 @@ def construct_armature(name, bone_data_array):			# bone_data =[boneIndex, boneNa
 		enter_editmode=True,
 		location=(0,0,0))
 	ob = bpy.context.object
-	ob.show_x_ray = False
+	# ob.show_x_ray = False
 	ob.name = name
 	amt = ob.data
 	amt.name = name +'Amt'
@@ -90,14 +90,14 @@ def construct_mesh(mesh_data):
 	else:
 		obj = bpy.data.objects[name]	
 	obj.location = Vector((0,0,0))
-	bpy.context.scene.objects.link(obj)
+	bpy.context.scene.collection.objects.link(obj)
 	objmesh.from_pydata(vertices, [], faces)
 	objmesh.update(calc_edges=True)
 	if has_bone:
 		weight_infos = mesh_data[4]
 		group_names = sorted(list(set(["bone%d" % i  for weight_info in weight_infos for i in weight_info[0]])))
 		for group_name in group_names:
-			obj.vertex_groups.new(group_name)
+			obj.vertex_groups.new(name=group_name)
 		for i in range(len(weight_infos)):
 			for index in range(4):
 				group_name = "bone%d"%weight_infos[i][0][index]
@@ -252,7 +252,7 @@ def get_wmb_material(wmb, texture_dir):
 	return materials
 
 def main(wmb_file = os.path.split(os.path.realpath(__file__))[0] + '\\test\\pl0000.dtt\\pl0000.wmb'):
-	reset_blend()
+	# reset_blend()
 	wmb = WMB3(wmb_file)
 	wmbname = wmb_file.split('\\')[-1]
 	texture_dir = wmb_file.replace(wmbname, '') 
